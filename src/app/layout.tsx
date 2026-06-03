@@ -103,7 +103,7 @@ export default function RootLayout({
                 "latitude": "YOUR_LATITUDE",
                 "longitude": "YOUR_LONGITUDE"
               },
-              "telephone": "+91-9047309009",
+              "telephone": "+91-7010344146",
               "priceRange": "₹₹₹",
               "openingHours": "Mo-Sa 09:00-18:00",
               "sameAs": [

@@ -81,14 +81,14 @@ export default function Contact() {
     { 
       icon: "📞", 
       title: "Phone", 
-      content: "+91 90473 09009",
-      link: "tel:+919047309009"
+      content: "+91 70103 44146",
+      link: "tel:+917010344146"
     },
     { 
       icon: "✉️", 
       title: "Email", 
-      content: "velanconstructions@gmail.com",
-      link: "mailto:velanconstructions@gmail.com"
+      content: "velanhomedevelopers@gmail.com",
+      link: "mailto:velanhomedevelopers@gmail.com"
     },
     { 
       icon: "📍", 
@@ -334,8 +334,8 @@ export default function Contact() {
                 <h3 className="text-2xl font-light mb-4">Need Immediate Assistance?</h3>
                 <p className="mb-6 text-gray-300">Call us directly for urgent inquiries or project consultations.</p>
                 <motion.a
-                  href="tel:+919047309009"
-                  aria-label="Call +91 90473 09009"
+                  href="tel:+917010344146"
+                  aria-label="Call +91 70103 44146"
                   className="inline-flex items-center bg-orange-600 text-white px-6 py-3 rounded-lg font-medium"
                   whileHover={{ 
                     scale: 1.05,
