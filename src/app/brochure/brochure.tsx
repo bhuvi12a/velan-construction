@@ -7,13 +7,19 @@ type PlanType = {
   id: string;
   name: string;
   pdfName: string;
-  rate: number;
+  rates: {
+    solid: number;
+    red: number;
+  };
   pages: number;
   description: string;
   features: {
     steel: string;
     cement: string;
-    bricks: string;
+    bricks: {
+      solid: string;
+      red: string;
+    };
     flooring: string;
     bathroom: string;
     electrical: string;
@@ -24,6 +30,7 @@ type PlanType = {
 
 const BrochurePage = () => {
   const [activePlan, setActivePlan] = useState<string>('basic');
+  const [brickType, setBrickType] = useState<'solid' | 'red'>('solid');
   const [builtArea, setBuiltArea] = useState<number>(1800);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState('');
@@ -42,13 +49,19 @@ const BrochurePage = () => {
       id: 'basic',
       name: 'Basic Plan',
       pdfName: 'basic-plan.pdf',
-      rate: 1650,
+      rates: {
+        solid: 2000,
+        red: 2100
+      },
       pages: 5,
       description: 'Solid quality civil structure and essential finishes, ideal for budgeting or standard villa construction.',
       features: {
         steel: 'Fe-500 TMT (Indus / Kamdhenu / equivalent)',
         cement: 'Standard OPC/PPC (Dalmia, Ramco, Birla)',
-        bricks: 'Solid concrete blocks / standard fly-ash bricks',
+        bricks: {
+          solid: 'Solid concrete blocks / standard fly-ash bricks',
+          red: 'Standard quality red clay bricks'
+        },
         flooring: 'Vitrified tiles (₹50-60 per sq ft range)',
         bathroom: 'Cera / Parryware fittings & sanitaryware',
         electrical: 'Finolex / Anchor standard wiring & conduits',
@@ -60,13 +73,19 @@ const BrochurePage = () => {
       id: 'standard',
       name: 'Standard Plan',
       pdfName: 'standard-plan.pdf',
-      rate: 1850,
+      rates: {
+        solid: 2200,
+        red: 2300
+      },
       pages: 6,
       description: 'Premium construction grade materials, high-durability finishes, and stylish bathroom layouts.',
       features: {
         steel: 'Fe-550 TMT (JSW Neo / Tata Tiscon / primary brands)',
         cement: 'Premium Grade OPC/PPC (UltraTech, Ramco, Dalmia)',
-        bricks: 'High-strength red clay bricks / premium solid blocks',
+        bricks: {
+          solid: 'Premium solid concrete blocks / high-strength block masonry',
+          red: 'High-strength red clay bricks'
+        },
         flooring: 'Premium Vitrified tiles (₹80-90 per sq ft range) & Granite steps',
         bathroom: 'Jaquar Continental / Hindware premium fittings',
         electrical: 'Havells / Finolex Fire-Resistant (FR) wiring & modular switches',
@@ -78,13 +97,19 @@ const BrochurePage = () => {
       id: 'premium',
       name: 'Premium Plan',
       pdfName: 'premium-plan.pdf',
-      rate: 2150,
+      rates: {
+        solid: 2400,
+        red: 2500
+      },
       pages: 6,
       description: 'Elite civil craftsmanship, luxury Italian marble/granite options, false ceilings, and smart utilities.',
       features: {
         steel: 'Primary TATA Tiscon / JSW Neo Fe-550 TMT Steel',
         cement: 'Super Premium OPC/PPC (UltraTech Super, ACC Gold)',
-        bricks: 'Grade-A first-class table-molded red clay bricks',
+        bricks: {
+          solid: 'Elite high-density solid concrete blocks',
+          red: 'Grade-A first-class table-molded red clay bricks'
+        },
         flooring: 'Italian Marble, premium Indian Granite, or elite tiles (₹120-150/sq ft)',
         bathroom: 'Premium Jaquar / Kohler fittings, wall-mounted closets & geyser points',
         electrical: 'Havells / Finolex FRLS (Fire Retardant Low Smoke) wires & smart automation ready',
@@ -106,7 +131,7 @@ const BrochurePage = () => {
   const activePlanData = plans[activePlan];
 
   // Cost calculator helpers
-  const calculatedCost = builtArea * activePlanData.rate;
+  const calculatedCost = builtArea * activePlanData.rates[brickType];
   const costBreakdown = [
     { name: 'Foundation & RCC Structure', percentage: 40, color: 'bg-orange-500' },
     { name: 'Brickwork & Plastering', percentage: 20, color: 'bg-amber-500' },
@@ -227,7 +252,7 @@ const BrochurePage = () => {
       {/* Main Content Area */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Plan Navigation Tabs */}
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-6">
           {Object.values(plans).map((plan) => (
             <motion.button
               key={plan.id}
@@ -242,10 +267,41 @@ const BrochurePage = () => {
             >
               <span className="text-lg font-semibold">{plan.name}</span>
               <span className={`text-xs opacity-80 mt-0.5 ${activePlan === plan.id ? 'text-white' : 'text-gray-500'}`}>
-                ₹{plan.rate}/sq ft • {plan.pages} Pages
+                ₹{plan.rates[brickType]}/sq ft • {plan.pages} Pages
               </span>
             </motion.button>
           ))}
+        </div>
+
+        {/* Brick Type Selector Toggle */}
+        <div className="flex flex-col items-center mb-12">
+          <span className="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-3">Select Masonry Brick Type</span>
+          <div className="bg-gray-50 border border-gray-200/60 p-1.5 rounded-2xl flex items-center gap-1 shadow-sm relative">
+            <motion.button
+              onClick={() => setBrickType('solid')}
+              className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 relative z-10 ${
+                brickType === 'solid'
+                  ? 'bg-white text-gray-900 shadow-md border border-gray-100/40'
+                  : 'text-gray-500 hover:text-gray-900'
+              }`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="text-base">🧱</span> Solid Concrete Blocks
+            </motion.button>
+            <motion.button
+              onClick={() => setBrickType('red')}
+              className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 relative z-10 ${
+                brickType === 'red'
+                  ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md'
+                  : 'text-gray-500 hover:text-gray-900'
+              }`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="text-base">🧱</span> Red Clay Bricks
+            </motion.button>
+          </div>
         </div>
 
         {/* Dynamic Panel */}
@@ -269,8 +325,8 @@ const BrochurePage = () => {
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-orange-100/60 flex items-center justify-center text-orange-600 text-sm">🧱</div>
                   <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider">Base Rate</p>
-                    <p className="text-sm font-semibold text-gray-800">₹{activePlanData.rate} / sq ft</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-wider">Base Rate ({brickType === 'solid' ? 'Solid Bricks' : 'Red Bricks'})</p>
+                    <p className="text-sm font-semibold text-gray-800">₹{activePlanData.rates[brickType]} / sq ft</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -455,9 +511,9 @@ const BrochurePage = () => {
               <thead>
                 <tr className="bg-gray-50 text-gray-700 text-xs uppercase tracking-wider border-b border-gray-100">
                   <th className="py-5 px-6 font-semibold min-w-[150px]">Material Type</th>
-                  <th className="py-5 px-6 font-semibold min-w-[200px]">Basic Plan (₹1,650/sq ft)</th>
-                  <th className="py-5 px-6 font-semibold min-w-[200px]">Standard Plan (₹1,850/sq ft)</th>
-                  <th className="py-5 px-6 font-semibold min-w-[200px]">Premium Plan (₹2,150/sq ft)</th>
+                  <th className="py-5 px-6 font-semibold min-w-[200px]">Basic Plan (₹{plans.basic.rates[brickType]}/sq ft)</th>
+                  <th className="py-5 px-6 font-semibold min-w-[200px]">Standard Plan (₹{plans.standard.rates[brickType]}/sq ft)</th>
+                  <th className="py-5 px-6 font-semibold min-w-[200px]">Premium Plan (₹{plans.premium.rates[brickType]}/sq ft)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 text-sm text-gray-600 font-light">
@@ -475,9 +531,9 @@ const BrochurePage = () => {
                 </tr>
                 <tr className="hover:bg-orange-50/20 transition-colors">
                   <td className="py-5 px-6 font-semibold text-gray-800">Masonry Bricks</td>
-                  <td className="py-5 px-6">{plans.basic.features.bricks}</td>
-                  <td className="py-5 px-6">{plans.standard.features.bricks}</td>
-                  <td className="py-5 px-6">{plans.premium.features.bricks}</td>
+                  <td className="py-5 px-6">{plans.basic.features.bricks[brickType]}</td>
+                  <td className="py-5 px-6">{plans.standard.features.bricks[brickType]}</td>
+                  <td className="py-5 px-6">{plans.premium.features.bricks[brickType]}</td>
                 </tr>
                 <tr className="hover:bg-orange-50/20 transition-colors">
                   <td className="py-5 px-6 font-semibold text-gray-800">Room Flooring</td>
